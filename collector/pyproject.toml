@@ -20,6 +20,7 @@ dev = [
 
 [project.scripts]
 gamani-db-check = "gamani_collector.db:main"
+gamani-collect-listings = "gamani_collector.collect_listings:main"
 
 [build-system]
 requires = ["hatchling"]

@@ -2,11 +2,20 @@ import logging
 import random
 import time
 from collections.abc import Callable
+from dataclasses import dataclass
 from typing import Any
 
 import httpx
 
 from gamani_collector.rate_limiter import RateLimiter
+
+
+@dataclass(frozen=True)
+class HttpResult:
+    data: dict[str, Any]
+    status_code: int
+    attempt_count: int
+    elapsed_ms: int
 
 
 class EncarClient:
@@ -51,7 +60,17 @@ class EncarClient:
         *,
         params: dict[str, str] | None = None,
     ) -> dict[str, Any]:
+        return self.get_json_result(path, params=params).data
+
+    def get_json_result(
+        self,
+        path: str,
+        *,
+        params: dict[str, str] | None = None,
+    ) -> HttpResult:
         response: httpx.Response | None = None
+        completed_attempt = 0
+        completed_elapsed_ms = 0
 
         for attempt in range(1, self._max_attempts + 1):
             if self._rate_limiter is not None:
@@ -127,6 +146,8 @@ class EncarClient:
                 )
                 raise
 
+            completed_attempt = attempt
+            completed_elapsed_ms = round((self._clock() - started_at) * 1000)
             self._logger.info(
                 "HTTP request completed",
                 extra={
@@ -134,7 +155,7 @@ class EncarClient:
                     "path": path,
                     "status_code": response.status_code,
                     "attempt": attempt,
-                    "elapsed_ms": round((self._clock() - started_at) * 1000),
+                    "elapsed_ms": completed_elapsed_ms,
                 },
             )
             break
@@ -147,7 +168,12 @@ class EncarClient:
         if not isinstance(data, dict):
             raise ValueError("API response must be a JSON object")
 
-        return data
+        return HttpResult(
+            data=data,
+            status_code=response.status_code,
+            attempt_count=completed_attempt,
+            elapsed_ms=completed_elapsed_ms,
+        )
 
     @staticmethod
     def _is_retryable_status(status_code: int) -> bool:
