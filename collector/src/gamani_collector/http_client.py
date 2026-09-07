@@ -5,6 +5,8 @@ from typing import Any
 
 import httpx
 
+from gamani_collector.rate_limiter import RateLimiter
+
 
 class EncarClient:
     """엔카 API와 통신하는 공통 HTTP 클라이언트."""
@@ -18,6 +20,7 @@ class EncarClient:
         backoff_base_seconds: float = 1.0,
         sleep: Callable[[float], None] = time.sleep,
         jitter: Callable[[float, float], float] = random.uniform,
+        rate_limiter: RateLimiter | None = None,
     ) -> None:
         if max_attempts < 1:
             raise ValueError("max_attempts must be at least 1")
@@ -26,6 +29,7 @@ class EncarClient:
         self._backoff_base_seconds = backoff_base_seconds
         self._sleep = sleep
         self._jitter = jitter
+        self._rate_limiter = rate_limiter
         self._client = httpx.Client(
             base_url=base_url,
             timeout=httpx.Timeout(10.0, connect=5.0),
@@ -45,6 +49,9 @@ class EncarClient:
         response: httpx.Response | None = None
 
         for attempt in range(1, self._max_attempts + 1):
+            if self._rate_limiter is not None:
+                self._rate_limiter.wait()
+
             try:
                 response = self._client.get(path, params=params)
             except (httpx.ConnectError, httpx.TimeoutException):

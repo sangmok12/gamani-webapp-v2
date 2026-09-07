@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     database_url: str = Field(min_length=1)
     app_env: str = "local"
     log_level: str = "INFO"
+    requests_per_second: float = Field(default=1.0, gt=0)
 
     model_config = SettingsConfigDict(
         env_file=PROJECT_ROOT / ".env",

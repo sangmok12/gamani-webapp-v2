@@ -2,6 +2,7 @@ import httpx
 import pytest
 
 from gamani_collector.http_client import EncarClient
+from gamani_collector.rate_limiter import RateLimiter
 
 
 def test_get_json_returns_json_object() -> None:
@@ -141,4 +142,33 @@ def test_get_json_retries_timeout_then_succeeds() -> None:
 
     assert result == {"vehicleId": "12345"}
     assert request_count == 2
+    assert delays == [1.0]
+
+
+def test_get_json_applies_rate_limit_before_each_request() -> None:
+    now = 0.0
+    delays: list[float] = []
+
+    def clock() -> float:
+        return now
+
+    def sleep(seconds: float) -> None:
+        nonlocal now
+        delays.append(seconds)
+        now += seconds
+
+    def handle_request(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, json={"vehicleId": "12345"})
+
+    rate_limiter = RateLimiter(
+        requests_per_second=1.0,
+        clock=clock,
+        sleep=sleep,
+    )
+    transport = httpx.MockTransport(handle_request)
+
+    with EncarClient(transport=transport, rate_limiter=rate_limiter) as client:
+        client.get_json("/v1/first")
+        client.get_json("/v1/second")
+
     assert delays == [1.0]
