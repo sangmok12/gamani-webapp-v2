@@ -5,6 +5,7 @@ description = "Gamani Lab V2 vehicle data collector"
 readme = "README.md"
 requires-python = ">=3.14,<3.15"
 dependencies = [
+  "httpx>=0.28.1",
   "psycopg[binary]>=3.3,<4",
   "pydantic-settings>=2.10,<3",
 ]

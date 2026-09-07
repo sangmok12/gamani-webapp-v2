@@ -1,0 +1,44 @@
+import httpx
+import pytest
+
+from gamani_collector.http_client import EncarClient
+
+
+def test_get_json_returns_json_object() -> None:
+    def handle_request(request: httpx.Request) -> httpx.Response:
+        assert request.headers["Accept"] == "application/json"
+        assert request.headers["User-Agent"] == "gamani-collector/0.1.0"
+
+        return httpx.Response(
+            200,
+            json={"vehicleId": "12345"},
+        )
+
+    transport = httpx.MockTransport(handle_request)
+
+    with EncarClient(transport=transport) as client:
+        result = client.get_json("/v1/readside/vehicle/12345")
+
+    assert result == {"vehicleId": "12345"}
+
+
+def test_get_json_raises_for_http_error() -> None:
+    def handle_request(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(404, json={"message": "Not Found"})
+
+    transport = httpx.MockTransport(handle_request)
+
+    with EncarClient(transport=transport) as client:
+        with pytest.raises(httpx.HTTPStatusError):
+            client.get_json("/v1/missing")
+
+
+def test_get_json_rejects_non_object_json() -> None:
+    def handle_request(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, json=["unexpected", "list"])
+
+    transport = httpx.MockTransport(handle_request)
+
+    with EncarClient(transport=transport) as client:
+        with pytest.raises(ValueError, match="API response must be a JSON object"):
+            client.get_json("/v1/test")
