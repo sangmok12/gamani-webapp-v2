@@ -1,0 +1,436 @@
+[
+  {
+    "code": "010",
+    "name": "선루프",
+    "category": "외관/내장",
+    "categoryCode": "01",
+    "ordering": 1.0
+  },
+  {
+    "code": "029",
+    "name": "헤드램프(HID)",
+    "category": "외관/내장",
+    "categoryCode": "01",
+    "ordering": 2.0
+  },
+  {
+    "code": "075",
+    "name": "헤드램프(LED)",
+    "category": "외관/내장",
+    "categoryCode": "01",
+    "ordering": 3.0
+  },
+  {
+    "code": "059",
+    "name": "파워 전동 트렁크",
+    "category": "외관/내장",
+    "categoryCode": "01",
+    "ordering": 4.0
+  },
+  {
+    "code": "080",
+    "name": "고스트 도어 클로징",
+    "category": "외관/내장",
+    "categoryCode": "01",
+    "ordering": 5.0
+  },
+  {
+    "code": "024",
+    "name": "전동접이 사이드 미러",
+    "category": "외관/내장",
+    "categoryCode": "01",
+    "ordering": 6.0
+  },
+  {
+    "code": "017",
+    "name": "알루미늄 휠",
+    "category": "외관/내장",
+    "categoryCode": "01",
+    "ordering": 7.0
+  },
+  {
+    "code": "062",
+    "name": "루프랙",
+    "category": "외관/내장",
+    "categoryCode": "01",
+    "ordering": 8.0
+  },
+  {
+    "code": "082",
+    "name": "열선 스티어링 휠",
+    "category": "외관/내장",
+    "categoryCode": "01",
+    "ordering": 9.0
+  },
+  {
+    "code": "083",
+    "name": "전동 조절 스티어링 휠",
+    "category": "외관/내장",
+    "categoryCode": "01",
+    "ordering": 10.0
+  },
+  {
+    "code": "084",
+    "name": "패들 시프트",
+    "category": "외관/내장",
+    "categoryCode": "01",
+    "ordering": 11.0
+  },
+  {
+    "code": "031",
+    "name": "스티어링 휠 리모컨",
+    "category": "외관/내장",
+    "categoryCode": "01",
+    "ordering": 12.0
+  },
+  {
+    "code": "030",
+    "name": "ECM 룸미러",
+    "category": "외관/내장",
+    "categoryCode": "01",
+    "ordering": 13.0
+  },
+  {
+    "code": "074",
+    "name": "하이패스",
+    "category": "외관/내장",
+    "categoryCode": "01",
+    "ordering": 14.0
+  },
+  {
+    "code": "006",
+    "name": "파워 도어록",
+    "category": "외관/내장",
+    "categoryCode": "01",
+    "ordering": 15.0
+  },
+  {
+    "code": "008",
+    "name": "파워 스티어링 휠",
+    "category": "외관/내장",
+    "categoryCode": "01",
+    "ordering": 16.0
+  },
+  {
+    "code": "007",
+    "name": "파워 윈도우",
+    "category": "외관/내장",
+    "categoryCode": "01",
+    "ordering": 17.0
+  },
+  {
+    "code": "026",
+    "name": "에어백(운전석)",
+    "category": "안전",
+    "categoryCode": "02",
+    "ordering": 1.0
+  },
+  {
+    "code": "027",
+    "name": "에어백(동승석)",
+    "category": "안전",
+    "categoryCode": "02",
+    "ordering": 2.0
+  },
+  {
+    "code": "020",
+    "name": "에어백(사이드)",
+    "category": "안전",
+    "categoryCode": "02",
+    "ordering": 3.0
+  },
+  {
+    "code": "056",
+    "name": "에어백(커튼)",
+    "category": "안전",
+    "categoryCode": "02",
+    "ordering": 4.0
+  },
+  {
+    "code": "001",
+    "name": "브레이크 잠김 방지(ABS)",
+    "category": "안전",
+    "categoryCode": "02",
+    "ordering": 5.0
+  },
+  {
+    "code": "019",
+    "name": "미끄럼 방지(TCS)",
+    "category": "안전",
+    "categoryCode": "02",
+    "ordering": 6.0
+  },
+  {
+    "code": "055",
+    "name": "차체자세 제어장치(ESC)",
+    "category": "안전",
+    "categoryCode": "02",
+    "ordering": 7.0
+  },
+  {
+    "code": "033",
+    "name": "타이어 공기압센서(TPMS)",
+    "category": "안전",
+    "categoryCode": "02",
+    "ordering": 8.0
+  },
+  {
+    "code": "088",
+    "name": "차선이탈 경보 시스템(LDWS)",
+    "category": "안전",
+    "categoryCode": "02",
+    "ordering": 9.0
+  },
+  {
+    "code": "002",
+    "name": "전자제어 서스펜션(ECS)",
+    "category": "안전",
+    "categoryCode": "02",
+    "ordering": 10.0
+  },
+  {
+    "code": "085",
+    "name": "주차감지센서(전방)",
+    "category": "안전",
+    "categoryCode": "02",
+    "ordering": 11.0
+  },
+  {
+    "code": "032",
+    "name": "주차감지센서(후방)",
+    "category": "안전",
+    "categoryCode": "02",
+    "ordering": 12.0
+  },
+  {
+    "code": "086",
+    "name": "후측방 경보 시스템",
+    "category": "안전",
+    "categoryCode": "02",
+    "ordering": 13.0
+  },
+  {
+    "code": "058",
+    "name": "후방 카메라",
+    "category": "안전",
+    "categoryCode": "02",
+    "ordering": 14.0
+  },
+  {
+    "code": "087",
+    "name": "360도 어라운드 뷰",
+    "category": "안전",
+    "categoryCode": "02",
+    "ordering": 15.0
+  },
+  {
+    "code": "068",
+    "name": "크루즈 컨트롤(일반)",
+    "category": "편의/멀티미디어",
+    "categoryCode": "03",
+    "ordering": 1.0
+  },
+  {
+    "code": "079",
+    "name": "크루즈 컨트롤(어댑티브)",
+    "category": "편의/멀티미디어",
+    "categoryCode": "03",
+    "ordering": 2.0
+  },
+  {
+    "code": "095",
+    "name": "헤드업 디스플레이(HUD)",
+    "category": "편의/멀티미디어",
+    "categoryCode": "03",
+    "ordering": 3.0
+  },
+  {
+    "code": "094",
+    "name": "전자식 주차브레이크(EPB)",
+    "category": "편의/멀티미디어",
+    "categoryCode": "03",
+    "ordering": 4.0
+  },
+  {
+    "code": "023",
+    "name": "자동 에어컨",
+    "category": "편의/멀티미디어",
+    "categoryCode": "03",
+    "ordering": 5.0
+  },
+  {
+    "code": "057",
+    "name": "스마트키",
+    "category": "편의/멀티미디어",
+    "categoryCode": "03",
+    "ordering": 6.0
+  },
+  {
+    "code": "015",
+    "name": "무선도어 잠금장치",
+    "category": "편의/멀티미디어",
+    "categoryCode": "03",
+    "ordering": 7.0
+  },
+  {
+    "code": "081",
+    "name": "레인센서",
+    "category": "편의/멀티미디어",
+    "categoryCode": "03",
+    "ordering": 8.0
+  },
+  {
+    "code": "097",
+    "name": "오토 라이트",
+    "category": "편의/멀티미디어",
+    "categoryCode": "03",
+    "ordering": 9.0
+  },
+  {
+    "code": "092",
+    "name": "커튼/블라인드(뒷좌석)",
+    "category": "편의/멀티미디어",
+    "categoryCode": "03",
+    "ordering": 10.0
+  },
+  {
+    "code": "093",
+    "name": "커튼/블라인드(후방)",
+    "category": "편의/멀티미디어",
+    "categoryCode": "03",
+    "ordering": 11.0
+  },
+  {
+    "code": "005",
+    "name": "내비게이션",
+    "category": "편의/멀티미디어",
+    "categoryCode": "03",
+    "ordering": 12.0
+  },
+  {
+    "code": "004",
+    "name": "앞좌석 AV 모니터",
+    "category": "편의/멀티미디어",
+    "categoryCode": "03",
+    "ordering": 13.0
+  },
+  {
+    "code": "054",
+    "name": "뒷좌석 AV 모니터",
+    "category": "편의/멀티미디어",
+    "categoryCode": "03",
+    "ordering": 14.0
+  },
+  {
+    "code": "096",
+    "name": "블루투스",
+    "category": "편의/멀티미디어",
+    "categoryCode": "03",
+    "ordering": 15.0
+  },
+  {
+    "code": "003",
+    "name": "CD 플레이어",
+    "category": "편의/멀티미디어",
+    "categoryCode": "03",
+    "ordering": 16.0
+  },
+  {
+    "code": "072",
+    "name": "USB 단자",
+    "category": "편의/멀티미디어",
+    "categoryCode": "03",
+    "ordering": 17.0
+  },
+  {
+    "code": "071",
+    "name": "AUX 단자",
+    "category": "편의/멀티미디어",
+    "categoryCode": "03",
+    "ordering": 18.0
+  },
+  {
+    "code": "014",
+    "name": "가죽시트",
+    "category": "시트",
+    "categoryCode": "04",
+    "ordering": 1.0
+  },
+  {
+    "code": "021",
+    "name": "전동시트(운전석)",
+    "category": "시트",
+    "categoryCode": "04",
+    "ordering": 2.0
+  },
+  {
+    "code": "035",
+    "name": "전동시트(동승석)",
+    "category": "시트",
+    "categoryCode": "04",
+    "ordering": 3.0
+  },
+  {
+    "code": "089",
+    "name": "전동시트(뒷좌석)",
+    "category": "시트",
+    "categoryCode": "04",
+    "ordering": 4.0
+  },
+  {
+    "code": "022",
+    "name": "열선시트(앞좌석)",
+    "category": "시트",
+    "categoryCode": "04",
+    "ordering": 5.0
+  },
+  {
+    "code": "063",
+    "name": "열선시트(뒷좌석)",
+    "category": "시트",
+    "categoryCode": "04",
+    "ordering": 6.0
+  },
+  {
+    "code": "051",
+    "name": "메모리 시트(운전석)",
+    "category": "시트",
+    "categoryCode": "04",
+    "ordering": 7.0
+  },
+  {
+    "code": "078",
+    "name": "메모리 시트(동승석)",
+    "category": "시트",
+    "categoryCode": "04",
+    "ordering": 8.0
+  },
+  {
+    "code": "034",
+    "name": "통풍시트(운전석)",
+    "category": "시트",
+    "categoryCode": "04",
+    "ordering": 9.0
+  },
+  {
+    "code": "077",
+    "name": "통풍시트(동승석)",
+    "category": "시트",
+    "categoryCode": "04",
+    "ordering": 10.0
+  },
+  {
+    "code": "090",
+    "name": "통풍시트(뒷좌석)",
+    "category": "시트",
+    "categoryCode": "04",
+    "ordering": 11.0
+  },
+  {
+    "code": "091",
+    "name": "마사지 시트",
+    "category": "시트",
+    "categoryCode": "04",
+    "ordering": 12.0
+  }
+]

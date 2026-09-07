@@ -1,0 +1,35 @@
+# macOS
+.DS_Store
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+.python/
+.tools/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+dist/
+build/
+*.egg-info/
+
+# JavaScript
+node_modules/
+
+# Editors
+.idea/
+.vscode/
+
+# Local data and logs
+data/
+logs/
+*.log
+

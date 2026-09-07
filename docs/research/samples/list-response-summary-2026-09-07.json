@@ -1,0 +1,534 @@
+{
+  "capturedAt": "2026-09-07T18:48:00+09:00",
+  "endpoint": "/search/car/list/mobile",
+  "queryPurpose": "V1 동일 BMW 520i M 스포츠 표본",
+  "totalCount": 248,
+  "searchResults": [
+    {
+      "listingId": "38251408",
+      "serviceCopyCar": "ORIGINAL",
+      "condition": [
+        "Inspection",
+        "Record",
+        "Resume"
+      ],
+      "serviceMark": [
+        "EncarDiagnosisP0"
+      ],
+      "manufacturer": "BMW",
+      "modelGroup": "5시리즈",
+      "model": "5시리즈 (G30)",
+      "badge": "520i M 스포츠",
+      "badgeDetail": null,
+      "transmission": "오토",
+      "fuelType": "가솔린",
+      "yearMonth": 202303.0,
+      "formYear": "2023",
+      "mileage": 28254.0,
+      "color": "검정색",
+      "seatColor": "갈색 계열",
+      "price": 1111.0,
+      "officeCityState": "광주"
+    },
+    {
+      "listingId": "41464910",
+      "serviceCopyCar": "DUPLICATION",
+      "condition": [
+        "Inspection",
+        "Record",
+        "Resume"
+      ],
+      "serviceMark": [
+        "EncarMeetgo",
+        "EncarDiagnosisP1"
+      ],
+      "manufacturer": "BMW",
+      "modelGroup": "5시리즈",
+      "model": "5시리즈 (G30)",
+      "badge": "520i M 스포츠",
+      "badgeDetail": null,
+      "transmission": "오토",
+      "fuelType": "가솔린",
+      "yearMonth": 202008.0,
+      "formYear": "2020",
+      "mileage": 85113.0,
+      "color": "쥐색",
+      "seatColor": "갈색 계열",
+      "price": 2320.0,
+      "officeCityState": "경기"
+    },
+    {
+      "listingId": "41460716",
+      "serviceCopyCar": "ORIGINAL",
+      "condition": [
+        "Inspection",
+        "Record",
+        "Resume"
+      ],
+      "serviceMark": [
+        "EncarDiagnosisP1"
+      ],
+      "manufacturer": "BMW",
+      "modelGroup": "5시리즈",
+      "model": "5시리즈 (G30)",
+      "badge": "520i M 스포츠",
+      "badgeDetail": null,
+      "transmission": "오토",
+      "fuelType": "가솔린",
+      "yearMonth": 202008.0,
+      "formYear": "2020",
+      "mileage": 85113.0,
+      "color": "쥐색",
+      "seatColor": "갈색 계열",
+      "price": 2320.0,
+      "officeCityState": "경기"
+    },
+    {
+      "listingId": "41971636",
+      "serviceCopyCar": "DUPLICATION",
+      "condition": [
+        "Inspection",
+        "Record",
+        "Resume"
+      ],
+      "serviceMark": [
+        "EncarMeetgo",
+        "EncarDiagnosisP1"
+      ],
+      "manufacturer": "BMW",
+      "modelGroup": "5시리즈",
+      "model": "5시리즈 (G30)",
+      "badge": "520i M 스포츠",
+      "badgeDetail": null,
+      "transmission": "오토",
+      "fuelType": "가솔린",
+      "yearMonth": 202008.0,
+      "formYear": "2020",
+      "mileage": 127125.0,
+      "color": "쥐색",
+      "seatColor": "갈색 계열",
+      "price": 2330.0,
+      "officeCityState": "경기"
+    },
+    {
+      "listingId": "41964469",
+      "serviceCopyCar": "ORIGINAL",
+      "condition": [
+        "Inspection",
+        "Record",
+        "Resume"
+      ],
+      "serviceMark": [
+        "EncarDiagnosisP1"
+      ],
+      "manufacturer": "BMW",
+      "modelGroup": "5시리즈",
+      "model": "5시리즈 (G30)",
+      "badge": "520i M 스포츠",
+      "badgeDetail": null,
+      "transmission": "오토",
+      "fuelType": "가솔린",
+      "yearMonth": 202008.0,
+      "formYear": "2020",
+      "mileage": 127125.0,
+      "color": "쥐색",
+      "seatColor": "갈색 계열",
+      "price": 2330.0,
+      "officeCityState": "경기"
+    },
+    {
+      "listingId": "42392446",
+      "serviceCopyCar": "ORIGINAL",
+      "condition": [
+        "Inspection",
+        "Record",
+        "Resume"
+      ],
+      "serviceMark": [
+        "EncarDiagnosisP0"
+      ],
+      "manufacturer": "BMW",
+      "modelGroup": "5시리즈",
+      "model": "5시리즈 (G30)",
+      "badge": "520i M 스포츠",
+      "badgeDetail": null,
+      "transmission": "오토",
+      "fuelType": "가솔린",
+      "yearMonth": 202005.0,
+      "formYear": "2020",
+      "mileage": 150154.0,
+      "color": "검정색",
+      "seatColor": "검정색 계열",
+      "price": 2490.0,
+      "officeCityState": "부산"
+    },
+    {
+      "listingId": "42545929",
+      "serviceCopyCar": "DUPLICATION",
+      "condition": [
+        "Inspection",
+        "Record",
+        "Resume"
+      ],
+      "serviceMark": [
+        "EncarMeetgo",
+        "EncarDiagnosisP2"
+      ],
+      "manufacturer": "BMW",
+      "modelGroup": "5시리즈",
+      "model": "5시리즈 (G30)",
+      "badge": "520i M 스포츠",
+      "badgeDetail": null,
+      "transmission": "오토",
+      "fuelType": "가솔린",
+      "yearMonth": 202005.0,
+      "formYear": "2020",
+      "mileage": 88448.0,
+      "color": "검정색",
+      "seatColor": "검정색 계열",
+      "price": 2749.0,
+      "officeCityState": "서울"
+    },
+    {
+      "listingId": "42534774",
+      "serviceCopyCar": "ORIGINAL",
+      "condition": [
+        "Inspection",
+        "Record",
+        "Resume"
+      ],
+      "serviceMark": [
+        "EncarDiagnosisP2"
+      ],
+      "manufacturer": "BMW",
+      "modelGroup": "5시리즈",
+      "model": "5시리즈 (G30)",
+      "badge": "520i M 스포츠",
+      "badgeDetail": null,
+      "transmission": "오토",
+      "fuelType": "가솔린",
+      "yearMonth": 202005.0,
+      "formYear": "2020",
+      "mileage": 88448.0,
+      "color": "검정색",
+      "seatColor": "검정색 계열",
+      "price": 2749.0,
+      "officeCityState": "서울"
+    },
+    {
+      "listingId": "42412104",
+      "serviceCopyCar": "DUPLICATION",
+      "condition": [
+        "Inspection",
+        "Record",
+        "Resume"
+      ],
+      "serviceMark": [
+        "EncarMeetgo",
+        "EncarDiagnosisP1"
+      ],
+      "manufacturer": "BMW",
+      "modelGroup": "5시리즈",
+      "model": "5시리즈 (G30)",
+      "badge": "520i M 스포츠",
+      "badgeDetail": null,
+      "transmission": "오토",
+      "fuelType": "가솔린",
+      "yearMonth": 202007.0,
+      "formYear": "2020",
+      "mileage": 65740.0,
+      "color": "검정색",
+      "seatColor": "갈색 계열",
+      "price": 2780.0,
+      "officeCityState": "경기"
+    },
+    {
+      "listingId": "42411015",
+      "serviceCopyCar": "ORIGINAL",
+      "condition": [
+        "Inspection",
+        "Record",
+        "Resume"
+      ],
+      "serviceMark": [
+        "EncarDiagnosisP1"
+      ],
+      "manufacturer": "BMW",
+      "modelGroup": "5시리즈",
+      "model": "5시리즈 (G30)",
+      "badge": "520i M 스포츠",
+      "badgeDetail": null,
+      "transmission": "오토",
+      "fuelType": "가솔린",
+      "yearMonth": 202007.0,
+      "formYear": "2020",
+      "mileage": 65740.0,
+      "color": "검정색",
+      "seatColor": "갈색 계열",
+      "price": 2780.0,
+      "officeCityState": "경기"
+    },
+    {
+      "listingId": "41480727",
+      "serviceCopyCar": "DUPLICATION",
+      "condition": [
+        "Inspection",
+        "Record",
+        "Resume"
+      ],
+      "serviceMark": [
+        "EncarMeetgo",
+        "EncarDiagnosisP2"
+      ],
+      "manufacturer": "BMW",
+      "modelGroup": "5시리즈",
+      "model": "5시리즈 (G30)",
+      "badge": "520i M 스포츠",
+      "badgeDetail": null,
+      "transmission": "오토",
+      "fuelType": "가솔린",
+      "yearMonth": 202008.0,
+      "formYear": "2020",
+      "mileage": 77291.0,
+      "color": "쥐색",
+      "seatColor": "갈색 계열",
+      "price": 2799.0,
+      "officeCityState": "경기"
+    },
+    {
+      "listingId": "41477293",
+      "serviceCopyCar": "ORIGINAL",
+      "condition": [
+        "Inspection",
+        "Record",
+        "Resume"
+      ],
+      "serviceMark": [
+        "EncarDiagnosisP2"
+      ],
+      "manufacturer": "BMW",
+      "modelGroup": "5시리즈",
+      "model": "5시리즈 (G30)",
+      "badge": "520i M 스포츠",
+      "badgeDetail": null,
+      "transmission": "오토",
+      "fuelType": "가솔린",
+      "yearMonth": 202008.0,
+      "formYear": "2020",
+      "mileage": 77291.0,
+      "color": "쥐색",
+      "seatColor": "갈색 계열",
+      "price": 2799.0,
+      "officeCityState": "경기"
+    },
+    {
+      "listingId": "41642890",
+      "serviceCopyCar": "DUPLICATION",
+      "condition": [
+        "Inspection",
+        "Record",
+        "Resume"
+      ],
+      "serviceMark": [
+        "EncarMeetgo",
+        "EncarDiagnosisP1"
+      ],
+      "manufacturer": "BMW",
+      "modelGroup": "5시리즈",
+      "model": "5시리즈 (G30)",
+      "badge": "520i M 스포츠",
+      "badgeDetail": null,
+      "transmission": "오토",
+      "fuelType": "가솔린",
+      "yearMonth": 202004.0,
+      "formYear": "2020",
+      "mileage": 82745.0,
+      "color": "은회색",
+      "seatColor": "갈색 계열",
+      "price": 2800.0,
+      "officeCityState": "경기"
+    },
+    {
+      "listingId": "41635079",
+      "serviceCopyCar": "ORIGINAL",
+      "condition": [
+        "Inspection",
+        "Record",
+        "Resume"
+      ],
+      "serviceMark": [
+        "EncarDiagnosisP1"
+      ],
+      "manufacturer": "BMW",
+      "modelGroup": "5시리즈",
+      "model": "5시리즈 (G30)",
+      "badge": "520i M 스포츠",
+      "badgeDetail": null,
+      "transmission": "오토",
+      "fuelType": "가솔린",
+      "yearMonth": 202004.0,
+      "formYear": "2020",
+      "mileage": 82745.0,
+      "color": "은회색",
+      "seatColor": "갈색 계열",
+      "price": 2800.0,
+      "officeCityState": "경기"
+    },
+    {
+      "listingId": "42473196",
+      "serviceCopyCar": "ORIGINAL",
+      "condition": [
+        "Inspection",
+        "Record",
+        "Resume"
+      ],
+      "serviceMark": [
+        "EncarDiagnosisP0"
+      ],
+      "manufacturer": "BMW",
+      "modelGroup": "5시리즈",
+      "model": "5시리즈 (G30)",
+      "badge": "520i M 스포츠",
+      "badgeDetail": null,
+      "transmission": "오토",
+      "fuelType": "가솔린",
+      "yearMonth": 202005.0,
+      "formYear": "2020",
+      "mileage": 86847.0,
+      "color": "청색",
+      "seatColor": "검정색 계열",
+      "price": 2840.0,
+      "officeCityState": "대구"
+    },
+    {
+      "listingId": "42672987",
+      "serviceCopyCar": "DUPLICATION",
+      "condition": [
+        "Inspection",
+        "Record",
+        "Resume"
+      ],
+      "serviceMark": [
+        "EncarMeetgo",
+        "EncarDiagnosisP1"
+      ],
+      "manufacturer": "BMW",
+      "modelGroup": "5시리즈",
+      "model": "5시리즈 (G30)",
+      "badge": "520i M 스포츠",
+      "badgeDetail": null,
+      "transmission": "오토",
+      "fuelType": "가솔린",
+      "yearMonth": 202105.0,
+      "formYear": "2021",
+      "mileage": 132465.0,
+      "color": "흰색",
+      "seatColor": "갈색 계열",
+      "price": 2850.0,
+      "officeCityState": "경기"
+    },
+    {
+      "listingId": "42662018",
+      "serviceCopyCar": "ORIGINAL",
+      "condition": [
+        "Inspection",
+        "Record",
+        "Resume"
+      ],
+      "serviceMark": [
+        "EncarDiagnosisP1"
+      ],
+      "manufacturer": "BMW",
+      "modelGroup": "5시리즈",
+      "model": "5시리즈 (G30)",
+      "badge": "520i M 스포츠",
+      "badgeDetail": null,
+      "transmission": "오토",
+      "fuelType": "가솔린",
+      "yearMonth": 202105.0,
+      "formYear": "2021",
+      "mileage": 132465.0,
+      "color": "흰색",
+      "seatColor": "갈색 계열",
+      "price": 2850.0,
+      "officeCityState": "경기"
+    },
+    {
+      "listingId": "42613831",
+      "serviceCopyCar": "DUPLICATION",
+      "condition": [
+        "Inspection",
+        "Record",
+        "Resume"
+      ],
+      "serviceMark": [
+        "EncarMeetgo",
+        "EncarDiagnosisP1"
+      ],
+      "manufacturer": "BMW",
+      "modelGroup": "5시리즈",
+      "model": "5시리즈 (G30)",
+      "badge": "520i M 스포츠",
+      "badgeDetail": null,
+      "transmission": "오토",
+      "fuelType": "가솔린",
+      "yearMonth": 202010.0,
+      "formYear": "2021",
+      "mileage": 120612.0,
+      "color": "흰색",
+      "seatColor": "갈색 계열",
+      "price": 2850.0,
+      "officeCityState": "경기"
+    },
+    {
+      "listingId": "42608648",
+      "serviceCopyCar": "ORIGINAL",
+      "condition": [
+        "Inspection",
+        "Record",
+        "Resume"
+      ],
+      "serviceMark": [
+        "EncarDiagnosisP1"
+      ],
+      "manufacturer": "BMW",
+      "modelGroup": "5시리즈",
+      "model": "5시리즈 (G30)",
+      "badge": "520i M 스포츠",
+      "badgeDetail": null,
+      "transmission": "오토",
+      "fuelType": "가솔린",
+      "yearMonth": 202010.0,
+      "formYear": "2021",
+      "mileage": 120612.0,
+      "color": "흰색",
+      "seatColor": "갈색 계열",
+      "price": 2850.0,
+      "officeCityState": "경기"
+    },
+    {
+      "listingId": "42516308",
+      "serviceCopyCar": "ORIGINAL",
+      "condition": [
+        "Inspection",
+        "Record",
+        "Resume"
+      ],
+      "serviceMark": [],
+      "manufacturer": "BMW",
+      "modelGroup": "5시리즈",
+      "model": "5시리즈 (G30)",
+      "badge": "520i M 스포츠",
+      "badgeDetail": null,
+      "transmission": "오토",
+      "fuelType": "가솔린",
+      "yearMonth": 202302.0,
+      "formYear": "2023",
+      "mileage": 81982.0,
+      "color": "은회색",
+      "seatColor": "갈색 계열",
+      "price": 2869.0,
+      "officeCityState": "부산"
+    }
+  ]
+}
