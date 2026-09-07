@@ -15,6 +15,10 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     requests_per_second: float = Field(default=1.0, gt=0)
 
+    @property
+    def sqlalchemy_database_url(self) -> str:
+        return self.database_url.replace("postgresql://", "postgresql+psycopg://", 1)
+
     model_config = SettingsConfigDict(
         env_file=PROJECT_ROOT / ".env",
         env_file_encoding="utf-8",
