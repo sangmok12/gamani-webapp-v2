@@ -1,3 +1,5 @@
+import logging
+
 import httpx
 import pytest
 
@@ -172,3 +174,39 @@ def test_get_json_applies_rate_limit_before_each_request() -> None:
         client.get_json("/v1/second")
 
     assert delays == [1.0]
+
+
+def test_get_json_logs_retry_and_success(caplog: pytest.LogCaptureFixture) -> None:
+    request_count = 0
+    logger = logging.getLogger("test.http_client")
+
+    def handle_request(request: httpx.Request) -> httpx.Response:
+        nonlocal request_count
+        request_count += 1
+
+        if request_count == 1:
+            return httpx.Response(500, json={"private": "do-not-log"})
+
+        return httpx.Response(200, json={"vehicleId": "12345"})
+
+    transport = httpx.MockTransport(handle_request)
+
+    with caplog.at_level(logging.INFO, logger=logger.name):
+        with EncarClient(
+            transport=transport,
+            sleep=lambda _seconds: None,
+            jitter=lambda _minimum, _maximum: 0.0,
+            logger=logger,
+        ) as client:
+            client.get_json("/v1/test", params={"vehicleNo": "do-not-log"})
+
+    events = [getattr(record, "event", None) for record in caplog.records]
+    combined_messages = " ".join(record.getMessage() for record in caplog.records)
+
+    assert events == [
+        "http_request_started",
+        "http_request_retry_scheduled",
+        "http_request_started",
+        "http_request_completed",
+    ]
+    assert "do-not-log" not in combined_messages

@@ -1,3 +1,4 @@
+import logging
 import random
 import time
 from collections.abc import Callable
@@ -21,6 +22,8 @@ class EncarClient:
         sleep: Callable[[float], None] = time.sleep,
         jitter: Callable[[float, float], float] = random.uniform,
         rate_limiter: RateLimiter | None = None,
+        logger: logging.Logger | None = None,
+        clock: Callable[[], float] = time.monotonic,
     ) -> None:
         if max_attempts < 1:
             raise ValueError("max_attempts must be at least 1")
@@ -30,6 +33,8 @@ class EncarClient:
         self._sleep = sleep
         self._jitter = jitter
         self._rate_limiter = rate_limiter
+        self._logger = logger or logging.getLogger(__name__)
+        self._clock = clock
         self._client = httpx.Client(
             base_url=base_url,
             timeout=httpx.Timeout(10.0, connect=5.0),
@@ -52,20 +57,86 @@ class EncarClient:
             if self._rate_limiter is not None:
                 self._rate_limiter.wait()
 
+            started_at = self._clock()
+            self._logger.info(
+                "HTTP request started",
+                extra={"event": "http_request_started", "path": path, "attempt": attempt},
+            )
+
             try:
                 response = self._client.get(path, params=params)
-            except (httpx.ConnectError, httpx.TimeoutException):
+            except (httpx.ConnectError, httpx.TimeoutException) as error:
+                elapsed_ms = round((self._clock() - started_at) * 1000)
+
                 if attempt == self._max_attempts:
+                    self._logger.error(
+                        "HTTP request failed",
+                        extra={
+                            "event": "http_request_failed",
+                            "path": path,
+                            "attempt": attempt,
+                            "elapsed_ms": elapsed_ms,
+                            "error_type": type(error).__name__,
+                        },
+                    )
                     raise
 
-                self._wait_before_retry(attempt)
+                retry_delay = self._retry_delay(attempt)
+                self._logger.warning(
+                    "HTTP request will be retried",
+                    extra={
+                        "event": "http_request_retry_scheduled",
+                        "path": path,
+                        "attempt": attempt,
+                        "elapsed_ms": elapsed_ms,
+                        "retry_delay_seconds": retry_delay,
+                        "error_type": type(error).__name__,
+                    },
+                )
+                self._sleep(retry_delay)
                 continue
 
             if self._is_retryable_status(response.status_code) and attempt < self._max_attempts:
-                self._wait_before_retry(attempt)
+                retry_delay = self._retry_delay(attempt)
+                self._logger.warning(
+                    "HTTP request will be retried",
+                    extra={
+                        "event": "http_request_retry_scheduled",
+                        "path": path,
+                        "status_code": response.status_code,
+                        "attempt": attempt,
+                        "elapsed_ms": round((self._clock() - started_at) * 1000),
+                        "retry_delay_seconds": retry_delay,
+                    },
+                )
+                self._sleep(retry_delay)
                 continue
 
-            response.raise_for_status()
+            try:
+                response.raise_for_status()
+            except httpx.HTTPStatusError:
+                self._logger.error(
+                    "HTTP request failed",
+                    extra={
+                        "event": "http_request_failed",
+                        "path": path,
+                        "status_code": response.status_code,
+                        "attempt": attempt,
+                        "elapsed_ms": round((self._clock() - started_at) * 1000),
+                    },
+                )
+                raise
+
+            self._logger.info(
+                "HTTP request completed",
+                extra={
+                    "event": "http_request_completed",
+                    "path": path,
+                    "status_code": response.status_code,
+                    "attempt": attempt,
+                    "elapsed_ms": round((self._clock() - started_at) * 1000),
+                },
+            )
             break
 
         if response is None:
@@ -82,10 +153,10 @@ class EncarClient:
     def _is_retryable_status(status_code: int) -> bool:
         return status_code == 429 or 500 <= status_code <= 599
 
-    def _wait_before_retry(self, attempt: int) -> None:
+    def _retry_delay(self, attempt: int) -> float:
         delay = self._backoff_base_seconds * (2 ** (attempt - 1))
         delay += self._jitter(0.0, 0.25)
-        self._sleep(delay)
+        return delay
 
     def close(self) -> None:
         self._client.close()
