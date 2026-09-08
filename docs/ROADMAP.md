@@ -37,7 +37,7 @@
 상태: 완료
 
 - 목록 응답 모델과 검색 조건 builder
-- PostgreSQL migration: `crawl_runs`, `crawl_requests`, `vehicle_listings`
+- PostgreSQL migration: `crawl_runs`, `crawl_requests`, 통합 `vehicles`
 - 표본 fixture 기반 파싱 테스트
 - 실제 API는 1~20건 canary만 실행
 

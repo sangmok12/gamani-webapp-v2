@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from gamani_collector.database import create_database_engine
 from gamani_collector.http_client import EncarClient
 from gamani_collector.logging_config import configure_logging
-from gamani_collector.models.database import CrawlRequest, CrawlRun, VehicleListing
+from gamani_collector.models.database import CrawlRequest, CrawlRun, Vehicle
 from gamani_collector.models.listing import EncarListResponse
 from gamani_collector.rate_limiter import RateLimiter
 from gamani_collector.settings import get_settings
@@ -15,7 +15,7 @@ LIST_PATH = "/search/car/list/mobile"
 LIST_QUERY = "(And.Hidden.N._.CarType.A.)"
 
 
-def collect_listings(limit: int = 3) -> list[VehicleListing]:
+def collect_listings(limit: int = 3) -> list[Vehicle]:
     if not 1 <= limit <= 500:
         raise ValueError("limit must be between 1 and 500")
 
@@ -50,16 +50,23 @@ def collect_listings(limit: int = 3) -> list[VehicleListing]:
 
         with Session(engine) as session:
             for summary in summaries:
-                statement = insert(VehicleListing).values(**summary)
+                price = summary.pop("price_manwon")
+                statement = insert(Vehicle).values(
+                    **summary,
+                    first_price_manwon=price,
+                    current_price_manwon=price,
+                    insurance_status="PENDING",
+                )
                 update_values = {
                     key: getattr(statement.excluded, key)
                     for key in summary
                     if key != "source_listing_id"
                 }
-                update_values["last_seen_at"] = now
+                update_values["current_price_manwon"] = statement.excluded.current_price_manwon
+                update_values["last_collected_at"] = now
                 session.execute(
                     statement.on_conflict_do_update(
-                        index_elements=[VehicleListing.source_listing_id],
+                        index_elements=[Vehicle.source_listing_id],
                         set_=update_values,
                     )
                 )
@@ -89,9 +96,9 @@ def collect_listings(limit: int = 3) -> list[VehicleListing]:
 
             listing_ids = [summary["source_listing_id"] for summary in summaries]
             return list(
-                session.query(VehicleListing)
-                .filter(VehicleListing.source_listing_id.in_(listing_ids))
-                .order_by(VehicleListing.source_listing_id)
+                session.query(Vehicle)
+                .filter(Vehicle.source_listing_id.in_(listing_ids))
+                .order_by(Vehicle.source_listing_id)
             )
     except Exception as error:
         with Session(engine) as session:
@@ -113,7 +120,7 @@ def main() -> None:
         print(
             f"{listing.source_listing_id} | {listing.manufacturer} | {listing.model} | "
             f"{listing.form_year}년 | {listing.mileage_km:,}km | "
-            f"{listing.price_manwon:,}만원"
+            f"{listing.current_price_manwon:,}만원"
         )
 
 

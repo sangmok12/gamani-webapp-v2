@@ -15,75 +15,12 @@ from gamani_collector.logging_config import configure_logging
 from gamani_collector.models.database import (
     CrawlRequest,
     CrawlRun,
-    InsuranceRecord,
     OptionCatalog,
     Vehicle,
-    VehicleIdentifier,
-    VehicleListing,
-    VehicleSearchDocument,
 )
 from gamani_collector.models.detail import SafeInsuranceRecord, SafeVehicleDetail
 from gamani_collector.rate_limiter import RateLimiter
 from gamani_collector.settings import get_settings
-
-
-def _upsert_vehicle(
-    session: Session,
-    listing: VehicleListing,
-    detail: SafeVehicleDetail,
-    now: datetime,
-) -> int:
-    values = {
-        "canonical_source_id": detail.canonical_source_id,
-        "vehicle_type": detail.vehicle_type,
-        "manufacturer": listing.manufacturer,
-        "model_group": listing.model_group,
-        "model": listing.model,
-        "badge": listing.badge,
-        "badge_detail": listing.badge_detail,
-        "transmission": listing.transmission,
-        "fuel_type": listing.fuel_type,
-        "year_month": listing.year_month,
-        "form_year": listing.form_year,
-        "color": listing.color,
-        "option_codes": detail.option_codes(),
-        "last_seen_at": now,
-    }
-    statement = insert(Vehicle).values(**values)
-    update_values = {
-        key: getattr(statement.excluded, key) for key in values if key != "canonical_source_id"
-    }
-    vehicle_id = session.scalar(
-        statement.on_conflict_do_update(
-            index_elements=[Vehicle.canonical_source_id],
-            set_=update_values,
-        ).returning(Vehicle.id)
-    )
-    if vehicle_id is None:
-        raise RuntimeError("vehicle upsert did not return an id")
-    return vehicle_id
-
-
-def _upsert_identifier(
-    session: Session,
-    vehicle_id: int,
-    detail: SafeVehicleDetail,
-    now: datetime,
-) -> None:
-    statement = insert(VehicleIdentifier).values(
-        vehicle_id=vehicle_id,
-        vehicle_no=detail.vehicle_no,
-        last_verified_at=now,
-    )
-    session.execute(
-        statement.on_conflict_do_update(
-            index_elements=[VehicleIdentifier.vehicle_id],
-            set_={
-                "vehicle_no": statement.excluded.vehicle_no,
-                "last_verified_at": statement.excluded.last_verified_at,
-            },
-        )
-    )
 
 
 def _ensure_option_catalog(session: Session, option_codes: list[str], now: datetime) -> None:
@@ -106,86 +43,21 @@ def _content_hash(values: dict[str, object]) -> str:
     return hashlib.sha256(encoded.encode()).hexdigest()
 
 
-def _upsert_insurance(
-    session: Session,
-    vehicle_id: int,
+def _update_insurance(
+    vehicle: Vehicle,
     *,
     status: str,
     record: SafeInsuranceRecord | None,
     error_code: str | None,
     now: datetime,
-) -> InsuranceRecord:
-    values = _insurance_values(record) if record is not None else {}
-    statement = insert(InsuranceRecord).values(
-        vehicle_id=vehicle_id,
-        status=status,
-        **values,
-        content_hash=_content_hash(values) if record is not None else None,
-        error_code=error_code,
-        observed_at=now,
-    )
-    update_values = {
-        column.name: getattr(statement.excluded, column.name)
-        for column in InsuranceRecord.__table__.columns
-        if column.name != "vehicle_id"
-    }
-    session.execute(
-        statement.on_conflict_do_update(
-            index_elements=[InsuranceRecord.vehicle_id],
-            set_=update_values,
-        )
-    )
-    return InsuranceRecord(
-        vehicle_id=vehicle_id,
-        status=status,
-        **values,
-        content_hash=_content_hash(values) if record is not None else None,
-        error_code=error_code,
-        observed_at=now,
-    )
-
-
-def _upsert_search_document(
-    session: Session,
-    listing: VehicleListing,
-    vehicle_id: int,
-    detail: SafeVehicleDetail,
-    insurance: InsuranceRecord,
-    now: datetime,
 ) -> None:
-    values = {
-        "listing_id": listing.source_listing_id,
-        "vehicle_id": vehicle_id,
-        "manufacturer": listing.manufacturer,
-        "model_group": listing.model_group,
-        "model": listing.model,
-        "badge": listing.badge,
-        "badge_detail": listing.badge_detail,
-        "form_year": listing.form_year,
-        "mileage_km": listing.mileage_km,
-        "price_manwon": listing.price_manwon,
-        "fuel_type": listing.fuel_type,
-        "transmission": listing.transmission,
-        "office_city_state": listing.office_city_state,
-        "option_codes": detail.option_codes(),
-        "insurance_status": insurance.status,
-        "owner_change_count": insurance.owner_change_count,
-        "vehicle_no_change_count": insurance.vehicle_no_change_count,
-        "government_use_count": insurance.government_use_count,
-        "business_use_count": insurance.business_use_count,
-        "loan_use_count": insurance.loan_use_count,
-        "total_loss_count": insurance.total_loss_count,
-        "flood_total_loss_count": insurance.flood_total_loss_count,
-        "updated_at": now,
-    }
-    statement = insert(VehicleSearchDocument).values(**values)
-    update_values = {key: getattr(statement.excluded, key) for key in values if key != "listing_id"}
-    session.execute(
-        statement.on_conflict_do_update(
-            index_elements=[VehicleSearchDocument.listing_id],
-            set_=update_values,
-        )
-    )
+    values = _insurance_values(record) if record is not None else {}
+    vehicle.insurance_status = status
+    for key, value in values.items():
+        setattr(vehicle, key, value)
+    vehicle.insurance_content_hash = _content_hash(values) if record is not None else None
+    vehicle.insurance_error_code = error_code
+    vehicle.insurance_observed_at = now
 
 
 def _add_request(
@@ -245,8 +117,8 @@ def collect_vehicle_data(listing_ids: list[str]) -> dict[str, int]:
         for listing_id in listing_ids:
             now = datetime.now(UTC)
             with Session(engine) as session:
-                listing = session.get(VehicleListing, listing_id)
-                if listing is None:
+                vehicle = session.get(Vehicle, listing_id)
+                if vehicle is None:
                     counters["failed"] += 1
                     continue
 
@@ -256,7 +128,8 @@ def collect_vehicle_data(listing_ids: list[str]) -> dict[str, int]:
                     _add_request(session, run_id, "DETAIL", listing_id, detail_result, "SUCCEEDED")
                 except httpx.HTTPStatusError as error:
                     not_found = error.response.status_code == 404
-                    listing.resolution_status = "NOT_FOUND" if not_found else "RETRY"
+                    if not_found:
+                        session.delete(vehicle)
                     _add_request(
                         session,
                         run_id,
@@ -273,17 +146,16 @@ def collect_vehicle_data(listing_ids: list[str]) -> dict[str, int]:
                         counters["failed"] += 1
                     continue
                 except Exception as error:
-                    listing.resolution_status = "RETRY"
                     _add_request(session, run_id, "DETAIL", listing_id, None, "FAILED", error)
                     session.commit()
                     counters["failed"] += 1
                     continue
 
-                vehicle_id = _upsert_vehicle(session, listing, detail, now)
-                _upsert_identifier(session, vehicle_id, detail, now)
+                vehicle.vehicle_no = detail.vehicle_no
+                vehicle.vehicle_type = detail.vehicle_type
+                vehicle.option_codes = detail.option_codes()
+                vehicle.last_collected_at = now
                 _ensure_option_catalog(session, detail.option_codes(), now)
-                listing.vehicle_id = vehicle_id
-                listing.resolution_status = "RESOLVED"
 
                 insurance_result: HttpResult | None = None
                 insurance_error: Exception | None = None
@@ -333,15 +205,13 @@ def collect_vehicle_data(listing_ids: list[str]) -> dict[str, int]:
                         error,
                     )
 
-                insurance = _upsert_insurance(
-                    session,
-                    vehicle_id,
+                _update_insurance(
+                    vehicle,
                     status=insurance_status,
                     record=insurance_model,
                     error_code=type(insurance_error).__name__ if insurance_error else None,
                     now=now,
                 )
-                _upsert_search_document(session, listing, vehicle_id, detail, insurance, now)
                 session.commit()
                 counters["completed"] += 1
 
