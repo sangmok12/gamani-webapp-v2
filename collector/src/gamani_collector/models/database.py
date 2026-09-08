@@ -76,6 +76,56 @@ class CrawlRequest(Base):
     )
 
 
+class CollectionJob(Base):
+    __tablename__ = "collection_jobs"
+    __table_args__ = (
+        CheckConstraint(
+            "status IN ('RUNNING', 'SUCCEEDED', 'FAILED')",
+            name="collection_jobs_status_check",
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    mode: Mapped[str] = mapped_column(Text, nullable=False)
+    manufacturer: Mapped[str | None] = mapped_column(Text)
+    query_expression: Mapped[str] = mapped_column(Text, nullable=False)
+    page_size: Mapped[int] = mapped_column(Integer, nullable=False)
+    max_vehicles: Mapped[int | None] = mapped_column(Integer)
+    expected_count: Mapped[int | None] = mapped_column(Integer)
+    next_offset: Mapped[int] = mapped_column(Integer, nullable=False, server_default="0")
+    processed_count: Mapped[int] = mapped_column(Integer, nullable=False, server_default="0")
+    last_page_hash: Mapped[str | None] = mapped_column(Text)
+    status: Mapped[str] = mapped_column(Text, nullable=False)
+    started_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=text("now()")
+    )
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    error_message: Mapped[str | None] = mapped_column(Text)
+
+
+class CollectionJobItem(Base):
+    __tablename__ = "collection_job_items"
+    __table_args__ = (
+        CheckConstraint(
+            "status IN ('PENDING', 'COMPLETED', 'NOT_FOUND', 'FAILED')",
+            name="collection_job_items_status_check",
+        ),
+        Index("collection_job_items_status_idx", "job_id", "status"),
+    )
+
+    job_id: Mapped[int] = mapped_column(
+        BigInteger,
+        ForeignKey("collection_jobs.id", ondelete="CASCADE"),
+        primary_key=True,
+    )
+    source_listing_id: Mapped[str] = mapped_column(Text, primary_key=True)
+    discovered_offset: Mapped[int] = mapped_column(Integer, nullable=False)
+    status: Mapped[str] = mapped_column(Text, nullable=False, server_default="PENDING")
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=text("now()")
+    )
+
+
 class Vehicle(Base):
     __tablename__ = "vehicles"
     __table_args__ = (

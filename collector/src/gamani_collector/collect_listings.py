@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from datetime import UTC, datetime
 
 from sqlalchemy.dialects.postgresql import insert
@@ -15,16 +16,30 @@ LIST_PATH = "/search/car/list/mobile"
 LIST_QUERY = "(And.Hidden.N._.CarType.A.)"
 
 
-def collect_listings(limit: int = 3) -> list[Vehicle]:
+@dataclass(frozen=True)
+class ListingPage:
+    vehicles: list[Vehicle]
+    total_count: int
+
+
+def collect_listing_page(
+    *,
+    limit: int,
+    offset: int = 0,
+    query: str = LIST_QUERY,
+    shard_key: str = "ALL",
+) -> ListingPage:
     if not 1 <= limit <= 500:
         raise ValueError("limit must be between 1 and 500")
+    if offset < 0:
+        raise ValueError("offset must not be negative")
 
     settings = get_settings()
     logger = configure_logging(settings.log_level)
     engine = create_database_engine()
 
     with Session(engine) as session:
-        run = CrawlRun(job_type="LISTINGS", shard_key="ALL", status="RUNNING")
+        run = CrawlRun(job_type="LISTINGS", shard_key=shard_key, status="RUNNING")
         session.add(run)
         session.commit()
         run_id = run.id
@@ -38,8 +53,8 @@ def collect_listings(limit: int = 3) -> list[Vehicle]:
                 LIST_PATH,
                 params={
                     "count": "true",
-                    "q": LIST_QUERY,
-                    "sr": f"|MobileModifiedDate|0|{limit}",
+                    "q": query,
+                    "sr": f"|MobileModifiedDate|{offset}|{limit}",
                     "cursor": "",
                 },
             )
@@ -75,7 +90,7 @@ def collect_listings(limit: int = 3) -> list[Vehicle]:
                 CrawlRequest(
                     run_id=run_id,
                     endpoint_type="LIST",
-                    page_offset=0,
+                    page_offset=offset,
                     requested_size=limit,
                     http_status=result.status_code,
                     attempt_count=result.attempt_count,
@@ -95,10 +110,13 @@ def collect_listings(limit: int = 3) -> list[Vehicle]:
             session.commit()
 
             listing_ids = [summary["source_listing_id"] for summary in summaries]
-            return list(
-                session.query(Vehicle)
-                .filter(Vehicle.source_listing_id.in_(listing_ids))
-                .order_by(Vehicle.source_listing_id)
+            vehicles = list(
+                session.query(Vehicle).filter(Vehicle.source_listing_id.in_(listing_ids))
+            )
+            by_id = {vehicle.source_listing_id: vehicle for vehicle in vehicles}
+            return ListingPage(
+                vehicles=[by_id[listing_id] for listing_id in listing_ids],
+                total_count=response.total_count,
             )
     except Exception as error:
         with Session(engine) as session:
@@ -110,6 +128,10 @@ def collect_listings(limit: int = 3) -> list[Vehicle]:
                 run.finished_at = datetime.now(UTC)
                 session.commit()
         raise
+
+
+def collect_listings(limit: int = 3) -> list[Vehicle]:
+    return collect_listing_page(limit=limit).vehicles
 
 
 def main() -> None:

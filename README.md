@@ -6,7 +6,7 @@ V1/V1.5의 Google Apps Script와 Google Sheets 중심 구조에서 얻은 업무
 
 ## 현재 단계
 
-현재는 **목록·상세·보험이력 canary 수집을 검증한 단계**다.
+현재는 **목록·상세·보험이력 수집과 500대·제조사별 실행 체계를 검증한 단계**다.
 
 - V1.5에서 조사한 엔카 API 자료 인수인계 완료
 - PostgreSQL 스키마 초안 인수인계 완료
@@ -19,8 +19,9 @@ V1/V1.5의 Google Apps Script와 Google Sheets 중심 구조에서 얻은 업무
 - 엔카 실제 목록·상세·보험이력 호출과 PostgreSQL 저장 검증
 - 판매 매물 ID 기준의 통합 차량 테이블과 옵션 메타데이터 구성
 - 차량번호 외 VIN·연락처·주소·사진·판매자 설명은 저장하지 않는 허용목록 적용
+- 목록 이동 중 중복을 제거하고 중단 지점부터 재개하는 장시간 수집 작업 구성
 
-현재 전체 수집 전 20대 canary로 데이터 연결과 검색 필드를 확인했다.
+현재 소량의 실제 데이터로 목록 페이지 이동, 상세·보험 수집, 중복 제거를 확인했다.
 
 ## 목표 구조
 
@@ -72,6 +73,24 @@ cd collector
 ../.tools/uv run gamani-collect-canary --limit 20
 ```
 
+500대 시험 수집과 제조사별 수집은 장시간 수집 명령을 사용한다.
+
+```bash
+# 서로 다른 차량 500대 수집
+../.tools/uv run gamani-collect --limit 500
+
+# 엔카가 제공하는 제조사 이름 확인
+../.tools/uv run gamani-collect --list-manufacturers
+
+# 선택한 제조사의 판매 차량 전체 수집
+../.tools/uv run gamani-collect --manufacturer 현대
+
+# 중단된 마지막 작업 이어서 실행
+../.tools/uv run gamani-collect --resume
+```
+
+Mac의 잠자기를 막고 장시간 실행하려면 명령 앞에 `caffeinate -dimsu`를 붙인다.
+
 종료할 때는 다음 명령을 사용한다. 데이터가 담긴 Docker volume은 유지된다.
 
 ```bash
@@ -92,5 +111,5 @@ docker compose stop
 - 한 번에 전체 시스템을 만들지 않고, 작은 기능 단위로 구현·확인·커밋한다.
 - 확인된 사실과 추정 또는 미검증 항목을 문서에서 구분한다.
 - 외부 API 응답 0건이나 구조 변경을 판매 종료로 간주하지 않는다.
-- 차량번호, VIN, 연락처, 주소 같은 개인정보는 일반 서비스 DB에 저장하지 않는다.
+- 차량 검색에 필요한 차량번호만 저장하며 VIN, 연락처, 상세 주소는 저장하지 않는다.
 - 약 20만 대 전체 수집은 canary 검증과 실패 복구 테스트가 끝난 뒤에만 실행한다.
