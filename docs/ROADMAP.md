@@ -12,7 +12,7 @@
 
 ## Phase 1 — 로컬 개발 환경과 DB 연결
 
-상태: 진행 중 — Python 환경과 설정 완료, PostgreSQL 최초 실행 및 실제 연결 확인 대기
+상태: 완료
 
 - Python 가상환경 및 패키지 구성
 - PostgreSQL Docker Compose 구성
@@ -23,6 +23,8 @@
 
 ## Phase 2 — 수집 공통 기반
 
+상태: 완료
+
 - HTTP client와 명시적 timeout
 - 제한된 동시성, 재시도, 지수 backoff와 jitter
 - 구조화 로그와 `run_id`
@@ -31,6 +33,8 @@
 완료 기준: 성공, 404, 429, 5xx, 잘못된 JSON을 테스트로 재현하고 각각 안전하게 분류한다.
 
 ## Phase 3 — 목록 1개 구간 수집
+
+상태: 완료
 
 - 목록 응답 모델과 검색 조건 builder
 - PostgreSQL migration: `crawl_runs`, `crawl_requests`, `vehicle_listings`
@@ -41,6 +45,8 @@
 
 ## Phase 4 — 실제 차량 ID 해석
 
+상태: canary 완료 — 다양한 유형 표본 검증은 Phase 6에서 계속
+
 - 축약 상세 호출
 - `vehicles`와 광고 alias 연결
 - ORIGINAL/DUPLICATION 사례 테스트
@@ -49,6 +55,8 @@
 완료 기준: 여러 광고 ID가 같은 실제 차량을 가리킬 때 차량은 하나, 광고는 여러 개로 저장된다.
 
 ## Phase 5 — 상세 데이터 확장
+
+상태: 진행 중 — 통합 옵션 코드·메타데이터·보험이력·차량번호 저장 완료, 성능·진단은 미구현
 
 - 옵션 카탈로그와 차량 옵션
 - 보험 이력과 사고 상세

@@ -21,6 +21,8 @@ dev = [
 [project.scripts]
 gamani-db-check = "gamani_collector.db:main"
 gamani-collect-listings = "gamani_collector.collect_listings:main"
+gamani-collect-canary = "gamani_collector.collect_vehicle_data:main"
+gamani-sync-option-catalog = "gamani_collector.sync_option_catalog:main"
 
 [build-system]
 requires = ["hatchling"]

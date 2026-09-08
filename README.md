@@ -6,7 +6,7 @@ V1/V1.5의 Google Apps Script와 Google Sheets 중심 구조에서 얻은 업무
 
 ## 현재 단계
 
-현재는 **로컬 개발 환경과 DB 연결을 구성하는 1단계**다. 실제 엔카 API 수집은 아직 실행하지 않는다.
+현재는 **목록·상세·보험이력 canary 수집을 검증한 단계**다.
 
 - V1.5에서 조사한 엔카 API 자료 인수인계 완료
 - PostgreSQL 스키마 초안 인수인계 완료
@@ -16,8 +16,11 @@ V1/V1.5의 Google Apps Script와 Google Sheets 중심 구조에서 얻은 업무
 - Python 수집기 최소 패키지 구성
 - PostgreSQL 18.6 Docker Compose 구성
 - 환경설정 로딩과 DB 연결 확인 코드 구성
+- 엔카 실제 목록·상세·보험이력 호출과 PostgreSQL 저장 검증
+- 실제 차량, 광고, 차량번호, 옵션 메타데이터, 보험이력, 검색 데이터 분리
+- 차량번호 외 VIN·연락처·주소·사진·판매자 설명은 저장하지 않는 허용목록 적용
 
-Docker Desktop을 실행한 뒤 PostgreSQL과 Python의 실제 연결을 확인하면 1단계가 완료된다.
+현재 전체 수집 전 20대 canary로 데이터 연결과 검색 필드를 확인했다.
 
 ## 목표 구조
 
@@ -60,6 +63,13 @@ docker compose ps
 ```bash
 cd collector
 ../.tools/uv run gamani-db-check
+```
+
+실제 목록·상세·보험이력을 소량 수집한다. canary 단계에서는 최대 100대로 제한한다.
+
+```bash
+cd collector
+../.tools/uv run gamani-collect-canary --limit 20
 ```
 
 종료할 때는 다음 명령을 사용한다. 데이터가 담긴 Docker volume은 유지된다.
